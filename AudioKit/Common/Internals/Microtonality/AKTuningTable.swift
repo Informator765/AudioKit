@@ -1,5 +1,6 @@
 //
 //  AKTuningTable.swift
+//  Octave based scales
 //  AudioKit
 //
 //  Created by Marcus W. Hobbs on 3/17/17.
@@ -59,6 +60,7 @@
     }
 
     /// Range of downwards Pitch Bend used in etNN calculation.  Must match your synthesizer's pitch bend DOWN range
+    /// etNNPitchBendRangeDown and etNNPitchBendRangeUp must cover a spread that is greater than the maximum distance between two notes in your octave. 
     @objc public var etNNPitchBendRangeDown: Cents = -50 {
         didSet {
             updateTuningTableFromMasterSet()
@@ -68,6 +70,7 @@
     internal let pitchBendLow: Double = 0
 
     /// Range of upwards Pitch Bend used in etNN calculation.  Must match your synthesizer's pitch bend UP range
+    /// etNNPitchBendRangeDown and etNNPitchBendRangeUp must cover a spread that is greater than the maximum distance between two notes in your octave. 
     @objc public var etNNPitchBendRangeUp: Cents = 50 {
         didSet {
             updateTuningTableFromMasterSet()
@@ -79,7 +82,8 @@
     internal var etNNDictionary = Dictionary<MIDINoteNumber, AKTuningTableETNN>()
 
     /// Given the tuning table's MIDINoteNumber NN return an AKTuningTableETNN of the equivalent 12ET MIDINoteNumber plus Pitch Bend
-    /// Returns nil if the tuning table's MIDINoteNumber cannot be mapped to 12ET
+    /// MIDI PitchBend applies to entire MIDI channel, so for polyphony you need to develop a note manager to spread/steal notes across MIDI channels or several instruments (synthesizers or samplers)
+    /// Returns nil if the tuning table's MIDINoteNumber cannot be mapped to 12ET (in case the frequency can't be reached with pitchbendrange, other cases?) 
     /// - parameter nn: The tuning table's Note Number
     @objc public func etNNPitchBend(NN nn: MIDINoteNumber) -> AKTuningTableETNN? {
         return etNNDictionary[nn]
@@ -88,7 +92,7 @@
     internal var delta12ETDictionary = Dictionary<MIDINoteNumber, AKTuningTableDelta12ET>()
 
     /// Given the tuning table's MIDINoteNumber NN return an AKTuningTableETNN of the equivalent 12ET MIDINoteNumber plus Pitch Bend
-    /// Returns nil if the tuning table's MIDINoteNumber cannot be mapped to 12ET
+    /// Returns nil if the tuning table's MIDINoteNumber cannot be mapped to 12ET (in case of what?)
     /// - parameter nn: The tuning table's Note Number
     @objc public func delta12ET(NN nn: MIDINoteNumber) -> AKTuningTableDelta12ET? {
         return delta12ETDictionary[nn]

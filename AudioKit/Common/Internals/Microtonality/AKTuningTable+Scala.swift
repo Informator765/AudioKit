@@ -9,6 +9,8 @@
 extension AKTuningTable {
 
     /// Use a Scala file to write the tuning table
+    /// returns notes per octave or nil when file couldn't be read
+    /// can't use it in objc as the optional return value can't be represented in objc
     public func scalaFile(_ filePath: String) -> Int? {
         guard
             let contentData = FileManager.default.contents(atPath: filePath),
@@ -52,7 +54,7 @@ extension AKTuningTable {
     }
 
     /// Get frequencies from a Scala string
-    open func frequencies(fromScalaString rawStr: String?) -> [Frequency]? {
+    @objc open func frequencies(fromScalaString rawStr: String?) -> [Frequency]? {
         guard let inputStr = rawStr else {
             return nil
         }

@@ -1,5 +1,6 @@
 //
 //  AKTuningTableBase.swift
+//  Maps tuning to midi note numbers centered about 60nn
 //  AudioKit
 //
 //  Created by Marcus W. Hobbs on 12/18/17.
@@ -47,6 +48,8 @@ import Foundation
     }
     
     /// Notes Per Octave: The count of the frequency array
+    /// Defaults to 12, 
+    /// as soon as the tuning table no longer uses 12TET, there will be not octaves and this method shall return -1 (or something like NSNotFound) 
     @objc public var npo: Int {
         get {
             return 12
